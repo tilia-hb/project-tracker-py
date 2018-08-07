@@ -42,7 +42,19 @@ def make_new_student(first_name, last_name, github):
     Given a first name, last name, and GitHub account, add student to the
     database and print a confirmation message.
     """
-    pass
+
+
+    QUERY = """
+        INSERT INTO students (first_name, last_name, github)
+        VALUES(:fname, :lname, :ghub)
+        """
+    db_cursor = db.session.execute(QUERY, {'fname': first_name,
+                                            'lname': last_name,
+                                            'ghub': github})
+
+    db.session.commit()
+
+    print("Added Student: {} {}\n Github Acct: {}".format(first_name, last_name, github))
 
 
 def get_project_by_title(title):
@@ -91,7 +103,7 @@ def handle_input():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    # handle_input()
+    handle_input()
 
     # To be tidy, we close our database connection -- though,
     # since this is where our program ends, we'd quit anyway.
